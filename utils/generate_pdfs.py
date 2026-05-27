@@ -473,9 +473,9 @@ def generate_test_cases_pdf():
         "Redirected to main dashboard"
     )
     
-    # TC-02
+    # TC-03
     add_test_case(
-        "TC-02", "Verify Client Creation with Unique Attributes",
+        "TC-03", "Verify Client Creation with Unique Attributes",
         "User is authenticated and on the Client Management page.",
         [
             ("Click '+ Add New Client' button", "Creation form slider opens successfully."),
@@ -489,9 +489,9 @@ def generate_test_cases_pdf():
 
     story.append(PageBreak())
     
-    # TC-03
+    # TC-05
     add_test_case(
-        "TC-03", "Verify Sales Order Creation & Grid Validation",
+        "TC-05", "Verify Sales Order Creation & Grid Validation",
         "User is logged in; at least one client exists.",
         [
             ("Click Order Management → Sales Orders → + Add New Order", "Sales Order form opens with empty grid row by default."),
@@ -504,9 +504,9 @@ def generate_test_cases_pdf():
         "Sales Order created and verified"
     )
 
-    # TC-04
+    # TC-07
     add_test_case(
-        "TC-04", "Verify Job Work (Work Order) Outsourced Flow",
+        "TC-07", "Verify Job Work (Work Order) Outsourced Flow",
         "User is logged in; at least one Vendor and Branch exists.",
         [
             ("Click Job Works → Work Order → + Add New Work Order", "Work Order form loads."),
