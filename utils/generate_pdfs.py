@@ -111,6 +111,7 @@ def generate_test_report_pdf():
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
         fontSize=24,
+        leading=28,
         textColor=colors.HexColor('#1a365d'),
         spaceAfter=6
     )
@@ -120,6 +121,7 @@ def generate_test_report_pdf():
         parent=styles['Normal'],
         fontName='Helvetica',
         fontSize=12,
+        leading=15,
         textColor=colors.HexColor('#4a5568'),
         spaceAfter=15
     )
@@ -149,6 +151,14 @@ def generate_test_report_pdf():
         fontName='Helvetica-Bold',
         fontSize=8,
         textColor=colors.HexColor('#2d3748')
+    )
+
+    header_cell_style = ParagraphStyle(
+        'HeaderCell',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=8,
+        textColor=colors.white
     )
 
     cell_style = ParagraphStyle(
@@ -241,12 +251,12 @@ def generate_test_report_pdf():
     story.append(Spacer(1, 8))
     
     headers = [
-        Paragraph("<b>Test Case ID</b>", cell_bold_style),
-        Paragraph("<b>Target Module</b>", cell_bold_style),
-        Paragraph("<b>Scenario Summary</b>", cell_bold_style),
-        Paragraph("<b>Type</b>", cell_bold_style),
-        Paragraph("<b>Severity</b>", cell_bold_style),
-        Paragraph("<b>Result</b>", cell_bold_style)
+        Paragraph("<b>Test Case ID</b>", header_cell_style),
+        Paragraph("<b>Target Module</b>", header_cell_style),
+        Paragraph("<b>Scenario Summary</b>", header_cell_style),
+        Paragraph("<b>Type</b>", header_cell_style),
+        Paragraph("<b>Severity</b>", header_cell_style),
+        Paragraph("<b>Result</b>", header_cell_style)
     ]
     
     # Build logs
