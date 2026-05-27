@@ -6,9 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "allure-pytest>=2.16.0",
+    "fpdf2>=2.8.7",
+    "matplotlib>=3.10.9",
     "pytest>=9.0.3",
     "pytest-html>=4.2.0",
     "pytest-metadata>=3.1.1",
+    "reportlab>=4.5.1",
     "selenium>=4.44.0",
 ]
 
