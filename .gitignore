@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# IDEs
+.idea/
+.vscode/
+
+# Test caches & reports
+.pytest_cache/
+reports/screenshots/
+allure-results/

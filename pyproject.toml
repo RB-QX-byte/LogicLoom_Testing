@@ -1,0 +1,22 @@
+[project]
+name = "logicloom-testing"
+version = "1.0.0"
+description = "Selenium + Pytest automation suite for TM-PMS (TMPMS) web application"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "allure-pytest>=2.16.0",
+    "pytest>=9.0.3",
+    "pytest-html>=4.2.0",
+    "pytest-metadata>=3.1.1",
+    "selenium>=4.44.0",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "run: mark test execution order",
+]
+addopts = [
+    "--html=reports/report.html",
+    "--self-contained-html",
+]
