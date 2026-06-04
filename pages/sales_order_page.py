@@ -104,6 +104,44 @@ class SalesOrderPage(BasePage):
     # Form actions
     # ------------------------------------------------------------------
 
+    def _dismiss_error_dialog(self):
+        """Detect and dismiss an application error modal (e.g. 'Order number already exists').
+
+        Returns the error message text if a dialog was found, else None.
+        """
+        try:
+            dialog = WebDriverWait(self.driver, 3).until(
+                EC.visibility_of_element_located(
+                    (By.XPATH, "//*[contains(@class,'swal') or contains(@class,'modal') or contains(@class,'dialog') or contains(@class,'alert')]"
+                               "[.//*[contains(text(),'Error') or contains(text(),'error') or contains(text(),'already exists')]]"
+                    )
+                )
+            )
+            # Extract error text
+            try:
+                msg_el = dialog.find_element(By.XPATH, ".//p | .//h2 | .//div[contains(@class,'content')]")
+                msg = msg_el.text.strip()
+            except Exception:
+                msg = dialog.text.strip()
+
+            # Click OK / Close button inside dialog
+            for ok_locator in [
+                ".//button[contains(.,'OK') or contains(.,'Ok') or contains(.,'ok')]",
+                ".//button[contains(.,'Close') or contains(.,'close')]",
+                ".//button",
+            ]:
+                btns = dialog.find_elements(By.XPATH, ok_locator)
+                visible = [b for b in btns if b.is_displayed()]
+                if visible:
+                    self.driver.execute_script("arguments[0].click();", visible[0])
+                    time.sleep(0.5)
+                    break
+
+            print("  [dialog] Error dialog dismissed: '%s'" % msg)
+            return msg
+        except Exception:
+            return None
+
     def create_sales_order(self, order_data):
         """
         Fill and submit the Sales Order creation form.
@@ -208,5 +246,14 @@ class SalesOrderPage(BasePage):
             self.driver.execute_script("arguments[0].click();", create_btn)
             print("  -> Submitted (button: '%s')" % create_btn.text.strip())
             time.sleep(4)
+
+            # Check for an error dialog (e.g. duplicate order number)
+            err = self._dismiss_error_dialog()
+            if err:
+                raise AssertionError("Server rejected the Sales Order — '%s'" % err)
+
+        except AssertionError:
+            raise
         except Exception as e:
             print("  [error] Could not submit: %s" % e)
+

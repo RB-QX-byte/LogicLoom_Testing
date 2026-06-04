@@ -4,6 +4,8 @@ import allure
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from datetime import date, timedelta
+from generate_test_cases import load_tc_data, _parse_work_order_testdata
 
 
 def pytest_addoption(parser):
@@ -103,3 +105,34 @@ def pytest_runtest_makereport(item, call):
 
         except Exception as e:
             print("[FAILURE] Could not capture screenshot: %s" % e)
+
+
+def build_wo_cases():
+    """Convert TC_DATA loaded via load_tc_data() into the wo_data dicts used by tests.
+
+    Filters for module == 'Job Work / Work Orders' and returns one dict per
+    work-order test case, ready for parametrization by pytest_generate_tests.
+    """
+    rows = []
+    for tc in load_tc_data():
+        if tc.get("module") != "Job Work / Work Orders":
+            continue
+        parsed = _parse_work_order_testdata(tc.get("test_data", ""))
+        parsed["test_case_id"] = tc.get("test_case_id")
+        parsed["name"] = tc.get("name", "")
+        parsed["description"] = tc.get("description", "")
+        parsed["technique"] = tc.get("technique", "")
+        parsed["mode"] = tc.get("mode", "")
+        parsed["severity"] = tc.get("severity", "")
+        rows.append(parsed)
+    return rows
+
+
+def pytest_generate_tests(metafunc):
+    """Parametrize `wo_data` from generated work-order cases when requested."""
+    if "wo_data" in metafunc.fixturenames:
+        cases = build_wo_cases()
+        if not cases:
+            return
+        ids = [c.get("test_case_id") for c in cases]
+        metafunc.parametrize("wo_data", cases, ids=ids)
